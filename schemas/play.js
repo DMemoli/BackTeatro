@@ -7,7 +7,12 @@ const playSchema = new Schema({
   name: { type: String, required: true, lowercase: true, trim: true, unique: true},
   plot: { type: String, required: true, lowercase: true, trim: true},
   cast: { type: String, required: true, lowercase: true, trim: true},
-  performances: [{show: { type: ObjectId, ref: 'Show' },}]
+  performances: [{show: { type: ObjectId, ref: 'Show' },}],
+  imgName:
+  {
+    type:String,
+    required: true,
+  },
 
 })
 

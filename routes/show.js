@@ -5,23 +5,23 @@ const Show = require('../schemas/show')
 
 const router = express.Router()
 
-router.get('/', getAllPlays)
-router.get('/:id', getPlayById)
-router.post('/', createPlay)
-router.put('/:id', updatePlay)
-router.delete('/:id', deletePlay)
+router.get('/', getAllShows)
+router.get('/:id', getShowById)
+router.post('/', createShow)
+router.put('/:id', updateShow)
+router.delete('/:id', deleteShow)
 
-async function getAllPlays(req, res, next) {
+async function getAllShows(req, res, next) {
  // console.log('getAllUsers by user ', req.user._id)   //consulta que usuario esta haciendo la consulta
   try {
-    const plays = await Play.find()
+    const plays = await Show.find()
     res.send(plays)
   } catch (err) {
     next(err)
   }
 }
 
-async function getPlayById(req, res, next) {
+async function getShowById(req, res, next) {
   console.log('getPlay with id: ', req.params.id)
 
   if (!req.params.id) {
@@ -29,17 +29,18 @@ async function getPlayById(req, res, next) {
   }
 
   try {
-    const user = await Play.findById(req.params.id)
+    const show = await Show.findById(req.params.id)
 
-    if (!user || user.length == 0) {
+    if (!show || show.length == 0) {
       res.status(404).send('User not found')
     }
 
-    res.send(user)
+    res.send(show)
   } catch (err) {
     next(err)
   }
 }
+
 
 // Por Postman
 // {
@@ -65,16 +66,16 @@ async function getPlayById(req, res, next) {
 //   "isActive": true
 // }
 
-async function createPlay(req, res, next) {
+async function createShow(req, res, next) {
   console.log('createPlay: ', req.body)
   
 
-  const obra = req.body
+  const show = req.body
 
 
   try {
     
-    const playCreated = await Play.create(obra)
+    const playCreated = await Show.create(show)
 
     res.send(playCreated)
   } catch (err) {
@@ -82,7 +83,7 @@ async function createPlay(req, res, next) {
   }
 }
 
-async function updatePlay(req, res, next) {
+async function updateShow(req, res, next) {
   console.log('updatePlay with id: ', req.params.id)
 
   if (!req.params.id) {
@@ -97,16 +98,16 @@ async function updatePlay(req, res, next) {
   delete req.body.name
 
   try {
-    const playToUpdate = await Play.findById(req.params.id)
+    const showToUpdate = await Show.findByPlay(req.params.id)
 
-    if (!playToUpdate) {
+    if (!showToUpdate) {
       req.logger.error('User not found')
       return res.status(404).send('User not found')
     }
 
     // This will return the previous status
-    await playToUpdate.updateOne(req.body)
-    res.send(playToUpdate)
+    await showToUpdate.updateOne(req.body)
+    res.send(showToUpdate)
 
     // This return the current status
     // userToUpdate.password = req.body.password
@@ -123,7 +124,7 @@ async function updatePlay(req, res, next) {
   }
 }
 
-async function deletePlay(req, res, next) {
+async function deleteShow(req, res, next) {
   console.log('deletePlay with id: ', req.params.id)
 
   if (!req.params.id) {
@@ -131,7 +132,7 @@ async function deletePlay(req, res, next) {
   }
 
   try {
-    const user = await Play.findById(req.params.id)
+    const user = await Show.findById(req.params.id)
 
     if (!user) {
       res.status(404).send('User not found')

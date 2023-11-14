@@ -7,6 +7,7 @@ const statusRouter = require('./routes/status')
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 const playRouter = require('./routes/play')
+const showRouter = require('./routes/show')
 const authentication = require('./middlewares/authentication')
 const authorization = require('./middlewares/authorization')
 
@@ -26,5 +27,5 @@ app.use('/', statusRouter)
 app.use('/auth', authRouter)
 app.use('/users', userRouter) // quitamos el middleware para que no si fije si esta conectado  --> authentication
 app.use('/plays', playRouter) 
-
+app.use('/shows', showRouter) 
 module.exports = app
