@@ -1,35 +1,35 @@
 const express = require('express')
 
-const Play = require('../schemas/play')
-const Show = require('../schemas/show')
+const Theater = require('../schemas/theater')
+
 
 const router = express.Router()
 
-router.get('/', getAllPlays)
-router.get('/:id', getPlayById)
-router.post('/', createPlay)
-router.put('/:id', updatePlay)
+router.get('/', getAllTheaters)
+router.get('/:id', getTheaterById)
+router.post('/', createTheater)
+router.put('/:id', updateTheater)
 router.delete('/:id', deletePlay)
 
-async function getAllPlays(req, res, next) {
+async function getAllTheaters(req, res, next) {
  // console.log('getAllUsers by user ', req.user._id)   //consulta que usuario esta haciendo la consulta
   try {
-    const plays = await Play.find()
-    res.send(plays)
+    const theaters = await Theater.find()
+    res.send(theaters)
   } catch (err) {
     next(err)
   }
 }
 
-async function getPlayById(req, res, next) {
-  console.log('getPlay with id: ', req.params.id)
+async function getTheaterById(req, res, next) {
+  console.log('get Theater with id: ', req.params.id)
 
   if (!req.params.id) {
     res.status(500).send('The param id is not defined')
   }
 
   try {
-    const user = await Play.findById(req.params.id).populate('performances')
+    const user = await Theater.findById(req.params.id)
 
     if (!user || user.length == 0) {
       res.status(404).send('User not found')
@@ -42,24 +42,24 @@ async function getPlayById(req, res, next) {
 }
 
 
-async function createPlay(req, res, next) {
-  console.log('createPlay: ', req.body)
+async function createTheater(req, res, next) {
+  console.log('create Theater: ', req.body)
   
 
-  const obra = req.body
-
+  const theater = req.body
+  
 
   try {
     
-    const playCreated = await Play.create(obra)
+    const theaterCreated = await Theater.create(theater)
 
-    res.send(playCreated)
+    res.send(theaterCreated)
   } catch (err) {
     next(err)
   }
 }
 
-async function updatePlay(req, res, next) {
+async function updateTheater(req, res, next) {
   console.log('updatePlay with id: ', req.params.id)
 
   if (!req.params.id) {
@@ -74,7 +74,7 @@ async function updatePlay(req, res, next) {
   delete req.body.name
 
   try {
-    const playToUpdate = await Play.findById(req.params.id)
+    const playToUpdate = await Theater.findById(req.params.id)
 
     if (!playToUpdate) {
       req.logger.error('User not found')
@@ -108,13 +108,13 @@ async function deletePlay(req, res, next) {
   }
 
   try {
-    const user = await Play.findById(req.params.id)
+    const user = await Theater.findById(req.params.id)
 
     if (!user) {
       res.status(404).send('User not found')
     }
 
-    await Play.deleteOne({ _id: user._id })
+    await Theater.deleteOne({ _id: user._id })
 
     res.send(`Play deleted :  ${req.params.id}`)
   } catch (err) {

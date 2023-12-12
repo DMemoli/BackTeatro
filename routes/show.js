@@ -2,17 +2,18 @@ const express = require('express')
 
 const Play = require('../schemas/play')
 const Show = require('../schemas/show')
+const Theater = require('../schemas/theater')
 
 const router = express.Router()
 
 router.get('/', getAllShows)
 router.get('/:id', getShowById)
-router.post('/', createShow)
+router.post('/:id', createShow)
 router.put('/:id', updateShow)
 router.delete('/:id', deleteShow)
 
 async function getAllShows(req, res, next) {
- // console.log('getAllUsers by user ', req.user._id)   //consulta que usuario esta haciendo la consulta
+  // console.log('getAllUsers by user ', req.user._id)   //consulta que usuario esta haciendo la consulta
   try {
     const plays = await Show.find()
     res.send(plays)
@@ -42,42 +43,55 @@ async function getShowById(req, res, next) {
 }
 
 
-// Por Postman
-// {
-//   "_id": "000000000000000000000000",
-//   "email": "admin@baseapinode.com",
-//   "password": "Password1",
-//   "firstName": "Admin",
-//   "lastName": "BaseApiNode",
-//   "role": "admin",
-//   "isActive": true
-// }
-// {
-//   "_id": "000000000000000000000001",
-//   "email": "client@baseapinode.com",
-//   "password": "Password1",
-//   "firstName": "Client",
-//   "lastName": "BaseApiNode",
-//   "role": "client",
-//     "governmentId": {
-//     "type": "dni",
-//     "number": "22222222"
-//   },
-//   "isActive": true
-// }
 
 async function createShow(req, res, next) {
-  console.log('createPlay: ', req.body)
-  
+  console.log('createShow: ', req.body)
+
 
   const show = req.body
 
-
   try {
-    
-    const playCreated = await Show.create(show)
+    const theater = await Theater.findOne({ name: show.theater_hall })
+    console.log(theater)
+    if (!show) {
+      res.status(404).send('Theater not found')
+    } else {
+      console.log(theater);
+    }
+  } catch (err) {
+    next(err)
+  }
+  try {
 
-    res.send(playCreated)
+    const showCreated = await Show.create(show)
+    try {
+      const playToUpdate = await Play.findById(req.params.id)
+
+      if (!playToUpdate) {
+        req.logger.error('User not found')
+        return res.status(404).send('User not found')
+      }
+      console.log(playToUpdate)
+      playToUpdate.performances.push(showCreated)
+      // This will return the previous status
+      await playToUpdate.updateOne(playToUpdate)
+      res.send(playToUpdate)
+
+      // This return the current status
+      // userToUpdate.password = req.body.password
+      // userToUpdate.role = req.body.role
+      // userToUpdate.firstName = req.body.firstName
+      // userToUpdate.lastName = req.body.lastName
+      // userToUpdate.phone = req.body.phone
+      // userToUpdate.bornDate = req.body.bornDate
+      // userToUpdate.isActive = req.body.isActive
+      // await userToUpdate.save()
+      // res.send(userToUpdate)
+    } catch (err) {
+      next(err)
+    }
+
+    res.send(showCreated)
   } catch (err) {
     next(err)
   }
