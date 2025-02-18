@@ -72,16 +72,25 @@ async function createUser(req, res, next) {
 
   const user = req.body
 
-  console.log(user.rol[0])
+  let role = "";
 
   try {
-    const role = await Role.findOne({ name: user.rol[0] })
+    if(user.rol){
+    role = await Role.findOne({ name: user.rol[0] })
     if (!role) {
       res.status(404).send('Role not found')
     } else {
       console.log(role);
     }
-
+  }else{
+    role = await Role.findOne({ name: "client" })
+    if (!role) {
+      res.status(404).send('Role not found')
+    } else {
+      console.log(role);
+    }
+  
+  }
     const passEncrypted = await bcrypt.hash(user.password, 10)
 
     const userCreated = await User.create({ ...user, password: passEncrypted, role: role._id })

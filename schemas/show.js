@@ -4,9 +4,12 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const showSchema = new Schema({
-  date: { type: Date, required: true, lowercase: true, trim: true, unique: true },
+  date: { type: Date, required: true, trim: true},
   seats: { type: Array, required: true },
-  theater_hall: { type: String, required: true }
+  theater_hall: { type: String, required: false },
+  price_general: { type: Number, required: true },
+  price_platea_baja: { type: Number, required: true },
+  price_platea_alta: { type: Number, required: true },
 
 })
 

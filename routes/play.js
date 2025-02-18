@@ -29,13 +29,12 @@ async function getPlayById(req, res, next) {
   }
 
   try {
-    const user = await Play.findById(req.params.id).populate('performances')
+    const play = await Play.findById(req.params.id).populate('performances')
 
-    if (!user || user.length == 0) {
+    if (!play || play.length == 0) {
       res.status(404).send('User not found')
     }
-
-    res.send(user)
+    res.send(play)
   } catch (err) {
     next(err)
   }

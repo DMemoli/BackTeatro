@@ -17,11 +17,12 @@ const userSchema = new Schema({
   },
   password: { type: String, required: true, select: false },
   role: { type: ObjectId, ref: 'Role', required: true },
-  firstName: { type: String, required: true, lowercase: true, trim: true },
-  lastName: { type: String, required: true, lowercase: true, trim: true },
+  firstName: { type: String, required: true, trim: true },
+  lastName: { type: String, required: true, trim: true },
   phone: { type: String, trim: true },
   prefix: { type: String, trim: true },
   isActive: { type: Boolean, default: true },
+
 })
 
 //userSchema.index({ 'governmentId.type': 1, 'governmentId.number': 1 }, { unique: false})

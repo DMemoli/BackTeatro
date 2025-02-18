@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const theaterSchema = new Schema({
+const seatsSchema = new Schema({
   name: { type: String, required: true, lowercase: true, trim: true, unique: true},
   seats: [
     { 
@@ -16,6 +16,6 @@ const theaterSchema = new Schema({
 
 })
 
-const Theater = mongoose.model('Theater', theaterSchema)
+const Seats = mongoose.model('Seats', seatsSchema)
 
-module.exports = Theater
+module.exports = Seats

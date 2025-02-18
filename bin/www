@@ -19,7 +19,7 @@ app.set('port', port)
 // Create HTTP server.
 const server = http.createServer(app)
 
-const db_url = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/'
+const db_url = process.env.MONGO_URL_AUTH_ENABLED|| 'mongodb://127.0.0.1:27017/'
 const db_name = process.env.MONGO_DB || 'test'
 
 // MongoDB database initialization
@@ -28,7 +28,14 @@ initDatabase()
   .catch((err) => console.log(err))
 
 async function initDatabase() {
-  await mongoose.connect(db_url + db_name)
+  
+  await mongoose.connect(db_url+db_name, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    //tls: true, // Cifra la conexión con SSL/TLS
+    authMechanism: 'SCRAM-SHA-256' // Usa autenticación segura
+
+})
 }
 
 // Listen on provided port, on all network interfaces.
