@@ -6,28 +6,32 @@ To run project local
 npm run dev
 ```
 
-To run migrations local
+To run Production
 
 ```
-npm run migrate-dev
+npm start
 ```
 
 .env (example)
 
 ```
 ENV=default
-PORT=5000
+PORT=3000
 MONGO_URL=mongodb://127.0.0.1:27017/
-MONGO_URL_AUTH_ENABLED=mongodb://user:password@127.0.0.1:27017/
-MONGO_DB=default
+MONGO_URL_AUTH_ENABLED=mongodb://adminTeatro:passTeatro@127.0.0.1:27017/
+MONGO_DB=teatro
 ```
 
 .env.development (example)
 
 ```
-ENV=development
-PORT=4000
+ENV=default
+PORT=3000
 MONGO_URL=mongodb://127.0.0.1:27017/
-MONGO_URL_AUTH_ENABLED=mongodb://user:password@127.0.0.1:27017/
-MONGO_DB=base-api-express-generator
+MONGO_URL_AUTH_ENABLED=mongodb://adminTeatro:passTeatro@127.0.0.1:27017/
+MONGO_DB=teatro
 ```
+To seed database - (First time use)
+
+cd scripts
+node populateDB.js
